@@ -9,9 +9,10 @@
 graphics::graphics(QWidget *parent):
     QWidget(parent)
 {
+    positionW=800;
+    positionH=800;
+    positionBH=1600;
     position=0;
-    positionW=width();
-    positionH=height();
     timerId=startTimer(100);
     size=0;
 }
@@ -21,20 +22,26 @@ void graphics::timerEvent(QTimerEvent *){
         position+=10;
     else
         position=0;
-
-    if (positionH < 5*height()/6)
-        positionH+=200;
+    //------------------
+    if (positionH > height())
+        positionH-=100;
     else{
         positionH=height();
+        if(positionBH > height())
+            positionBH-=100;
+        else
+            positionBH=height();
     }
-    if (positionW < width())
-        positionW+=100;
+    //------------------
+    if (positionW > width())
+        positionW-=10;
     else
         positionW=width();
-    if(size < height())
+    //------------------
+    if(size < h)
         size+=100;
     else
-        size=height();
+        size=h;
     repaint();
 }
 
@@ -42,12 +49,12 @@ void graphics::paintEvent(QPaintEvent *){
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
     drawBackground(painter);
-    drawGround(painter, width(), height());
-    drawBackBuilding(painter, positionW, height());
+    drawBackBuilding(painter, width(), positionBH);
     drawCloudLeft(painter, width(), height(), position);
     drawCloudRight(painter, width(), height(), -position+width());
     drawFrontBuilding(painter, width(), positionH);
-    drawTree(painter, width(), height(), size);
+    drawTree(painter, width(), height(), positionH);
+    drawGround(painter, width(), height());
 }
 
 void graphics::drawBackground(QPainter &painter){
@@ -67,6 +74,9 @@ QPointF graphics::tinhtien(QPointF c, float x, float y){
 
 void graphics::drawGround(QPainter &painter, float x, float y){
     //Ve nen dat
+    painter.setBrush(QColor("#FFF98A"));
+    QRectF below(0, y/2+y/3, x, y);
+    painter.drawRect(below);
     QRectF nen(x/2 - x/3, y/2 + y/3, x/1.5, y/30);
     painter.setBrush(QColor("#066060"));
     painter.drawRoundedRect(nen, 10,10);
