@@ -12,12 +12,14 @@ public:
     explicit graphics(QWidget *parent = 0);
 
     void timerEvent(QTimerEvent *);
-    double position, positionW, positionH, positionH1;
+    double positionC, position;
     double timerId;
 
     void paintEvent(QPaintEvent *);
     double h=height();
     double w=width();
+    double positionW, positionBW;
+    double positionH, positionBH;
 
     QPointF pstart, pcenter, pnew;
     int size;
