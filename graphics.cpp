@@ -4,7 +4,6 @@
 #include <QString>
 #include <QPointF>
 #include <QRectF>
-#include <QGraphicsOpacityEffect>
 
 graphics::graphics(QWidget *parent):
     QWidget(parent)
@@ -32,16 +31,6 @@ void graphics::timerEvent(QTimerEvent *){
         else
             positionBH=height();
     }
-    //------------------
-    if (positionW > width())
-        positionW-=10;
-    else
-        positionW=width();
-    //------------------
-    if(size < h)
-        size+=100;
-    else
-        size=h;
     repaint();
 }
 
@@ -63,13 +52,6 @@ void graphics::drawBackground(QPainter &painter){
     //Ve nen
     painter.setBrush(QColor("#FFF98A"));
     painter.drawRect(0, 0, w, h);
-}
-
-QPointF graphics::tinhtien(QPointF c, float x, float y){
-    QPointF pnew;
-    pnew.setX(c.x()+x);
-    pnew.setY(c.y()+y);
-    return pnew;
 }
 
 void graphics::drawGround(QPainter &painter, float x, float y){
@@ -218,11 +200,11 @@ void graphics::drawCloudLeft(QPainter &painter, float x, float y, double positio
 void graphics::drawCloudRight(QPainter &painter, float x, float y, double position){
     float i=x/2, j=y/2;
     painter.setBrush(QColor("#ffffff"));
-    QRectF c1(position+i/6, j-j/1.2, i/4, j/15);
+    QRectF c1(position+i/6, j-j/1.45, i/4, j/15);
     painter.drawRoundedRect(c1, i/60, i/60);
     QRectF c2(position-i/8, j-j/1.3, i/2, j/10);
     painter.drawRoundedRect(c2, i/30, i/30);
-    QRectF c3(position-i/6, j-j/1.45, i/4, j/15);
+    QRectF c3(position-i/6, j-j/1.2, i/4, j/15);
     painter.drawRoundedRect(c3, i/60, i/60);
 }
 
