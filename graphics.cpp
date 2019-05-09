@@ -14,23 +14,32 @@ graphics::graphics(QWidget *parent):
     position=0;
     timerId=startTimer(100);
     size=0;
+    sizel=0;
 }
 
 void graphics::timerEvent(QTimerEvent *){
     if (position < width())
-        position+=10;
+        position+=5;
     else
         position=0;
     //------------------
-    if (positionH > height())
-        positionH-=100;
+    if (positionH > height()){
+        positionH-=50;
+    }
     else{
         positionH=height();
         if(positionBH > height())
             positionBH-=100;
         else
             positionBH=height();
+
+        if(sizel < 40)
+            sizel+=5;
+        else
+            sizel=40;
     }
+//    --------------------
+
     repaint();
 }
 
@@ -41,7 +50,7 @@ void graphics::paintEvent(QPaintEvent *){
     drawBackBuilding(painter, width(), positionBH);
     drawCloudLeft(painter, width(), height(), position);
     drawCloudRight(painter, width(), height(), -position+width());
-    drawFrontBuilding(painter, width(), positionH);
+    drawFrontBuilding(painter, width(), positionH, sizel);
     drawTree(painter, width(), height(), positionH);
     drawGround(painter, width(), height());
 }
@@ -64,7 +73,7 @@ void graphics::drawGround(QPainter &painter, float x, float y){
     painter.drawRoundedRect(nen, 10,10);
 }
 
-void graphics::drawFrontBuilding(QPainter &painter, float x, float y){
+void graphics::drawFrontBuilding(QPainter &painter, float x, float y, float sizel){
     float n=x/2, m=y/2;
     //Ve hinh ngoi nha
     QPointF building[5]={
@@ -120,6 +129,8 @@ void graphics::drawFrontBuilding(QPainter &painter, float x, float y){
     painter.setBrush(QColor("#129B97"));
     QRectF door(n-n/6, y/2+y/6, n/4, y/6);
     painter.drawRect(door);
+    //Ve logo
+    loadLogo(painter, 23*n/24 - sizel/2, y/2.3, sizel);
 }
 
 void graphics::drawBackBuilding(QPainter &painter, float x, float y){
@@ -214,4 +225,9 @@ void graphics::drawTree(QPainter &painter, float x, float y, double size){
     painter.drawPixmap(x/2-x/3, y/2+y/7, x/15, 2*(size/10), QPixmap(tree));
     painter.drawPixmap(x/2+x/4, y/2+y/7, x/15, 2*(size/10), QPixmap(tree));
     painter.drawPixmap(x/2+x/6, y/2+y/7, x/15, 2*(size/10), QPixmap(tree));
+}
+
+void graphics::loadLogo(QPainter &painter, float x, float y, double sizel){
+    QString logo="F:/Study/CT203 - Computer Graphic/Animation/Images/logo.png";
+    painter.drawPixmap(x, y, sizel, sizel, QPixmap(logo));
 }
